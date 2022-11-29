@@ -39,10 +39,8 @@ void getChallengeProperties();
 #define BUFSIZE 1024
 #define MD5LEN  16
 
-//LPCWSTR filename = L"filename.txt";
 const int len = 5;
 LPCWSTR filenames[len] = { L"test.txt", L"test2.txt", L"test3.txt", L"test4.txt", L"test5.txt" };
-//const char* original_hash = "d02d34b2ce0b71c766dd105fe4d8f85d ";
 const char* original_hashes[len] = { "d23bc07c6d15edf5", "EstaMal","d23bc07c6d15edf5","d23bc07c6d15edf5","d23bc07c6d15edf5" };
 
 DWORD check_if_same_hash(LPCWSTR filename, const char* original_hash) {
