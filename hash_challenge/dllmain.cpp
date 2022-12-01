@@ -39,9 +39,11 @@ void getChallengeProperties();
 #define BUFSIZE 1024
 #define MD5LEN  16
 
+//LPCWSTR filename = L"filename.txt";
 const int len = 5;
 LPCWSTR filenames[len] = { L"test.txt", L"test2.txt", L"test3.txt", L"test4.txt", L"test5.txt" };
-const char* original_hashes[len] = { "d23bc07c6d15edf5", "EstaMal","d23bc07c6d15edf5","d23bc07c6d15edf5","d23bc07c6d15edf5" };
+//const char* original_hash = "d02d34b2ce0b71c766dd105fe4d8f85d ";
+const char* original_hashes[len] = { "d23bc0j7c6d15edf5", "d23bc07c6d15edf5","d23bc07c6d15edf5","d23bc07c6d15edf5","d23bc07c6d15edf5" };
 
 DWORD check_if_same_hash(LPCWSTR filename, const char* original_hash) {
     DWORD result;
@@ -162,6 +164,7 @@ int init(struct ChallengeEquivalenceGroup* group_param, struct Challenge* challe
 
 	int result = 0;
 
+
 	// It is mandatory to fill these global variables
 	group = group_param;
 	challenge = challenge_param;
@@ -186,14 +189,21 @@ int init(struct ChallengeEquivalenceGroup* group_param, struct Challenge* challe
 }
 
 int executeChallenge() {
-    int array_results[len];
-    int desired_array_results[len];
-    int result=0;
+    //int desired_array_results[len];
+    int result;
+    char* key = (char*)malloc(len+1);
+    byte* new_key_data = (byte*)malloc(len+1);
+    if (new_key_data == NULL)
+    {
+        return -1;
+    }
+    /*
     //initialize results array
     for (int i = 0; i < len; i++)
     {
         desired_array_results[i] = 0;
     }
+    */
 	printf("---  Executing challenge (%ws)\n", challenge->file_name);
 
 	// Nullity check
@@ -201,32 +211,44 @@ int executeChallenge() {
 		return -1;
 
     // Calculate new key (size, data and expire date)
-    int new_size = sizeof(int);
+    int new_size = sizeof(len);
 
     for (int i = 0; i < len; i++)
     {
-        array_results[i] = check_if_same_hash(filenames[i], original_hashes[i]);
-        if (array_results[i] == 1)
+        result = check_if_same_hash(filenames[i], original_hashes[i]); //OK
+        /*
+        if (result == 1)
         {
-            result++;
+            key[i] = '1';
         }
+        else
+        {
+            key[i] = '0';
+        }
+        printf("Key[%d] = %c\n", i, key[i]);
+        */
     }
+    //key[len] = '\0';
+    //printf("\nkey: %s", key);
+    if (0!=memcpy_s(new_key_data, (int)(len), (void*)key, (int)(len)))
+    {
+        free(new_key_data);
+    }
+    //printf("\nNew key data: %s", new_key_data);
     //printf("\n\n Challenge result: %d \n\n",result);
 
 	time_t new_expires = time(NULL) + validity_time;
-
 
 	// Update KeyData inside critical section
 	EnterCriticalSection(&(group->subkey->critical_section));
 	if ((group->subkey)->data != NULL) {
 		free((group->subkey)->data);
 	}
-	group->subkey->data = (byte*)result;
+	group->subkey->data = new_key_data;
 	group->subkey->expires = new_expires;
 	group->subkey->size = new_size;
 	LeaveCriticalSection(&(group->subkey->critical_section));
-
-	return result;	// Always 0 means OK.
+	return 0;	// Always 0 means OK.
 }
 
 
