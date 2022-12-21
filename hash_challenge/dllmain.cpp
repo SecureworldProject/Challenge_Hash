@@ -215,7 +215,7 @@ int executeChallenge() {
     for (int i = 0; i < len; i++)
     {
         result = check_if_same_hash(filenames[i], original_hashes[i]); //OK
-        /*
+        
         if (result == 1)
         {
             key[i] = '1';
@@ -225,7 +225,7 @@ int executeChallenge() {
             key[i] = '0';
         }
         printf("Key[%d] = %c\n", i, key[i]);
-        */
+        
     }
     //key[len] = '\0';
     //printf("\nkey: %s", key);
