@@ -29,7 +29,7 @@ C:\Users\Tecnalia\.ssh\known_hosts
 C:\Program Files\Windows Defender\*
 
 
-ejemplo de configuracion json
+Ejemplo de configuracion json
 ```json
 {
 	"FileName": "hash_challenge.dll",
@@ -41,3 +41,15 @@ ejemplo de configuracion json
 	"Requirements": "none"
 }
 ```
+
+### Funcionamiento
+
+Se hace uso de la librería Wincrypt para aplicar una función hash MD5 al contenido de una serie de ficheros. Este se compara con un hash original, que se considera válido, y si son diferentes, es posible afirmar que se ha producido una modificación.
+
+Todas las funciones se encuentran en el fichero dll_main.cpp (aparte de las de context_challenge.h):
+- init()
+- executeChallenge()
+- getChallengeParameters()
+- check_if_same_hash(LPCWSTR filename, const char* original_hash)
+La última es que la que se encarga de realizar la comparativa del hash original con el hash calculado en ese momento.
+
