@@ -27,3 +27,17 @@ C:\Users\Tecnalia\.ssh\known_hosts
 ### Windows Defender:
 
 C:\Program Files\Windows Defender\*
+
+
+ejemplo de configuracion json
+```json
+{
+	"FileName": "hash_challenge.dll",
+	"Description": "This is a challenge that verifies the integrity of a file by checking its hash against a known value",
+	"Props": {
+		"validity_time": 3600,
+		"refresh_time": 3000
+	},
+	"Requirements": "none"
+}
+```
