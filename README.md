@@ -44,7 +44,7 @@ Ejemplo de configuracion json
 
 ### Funcionamiento
 
-Se hace uso de la librería Wincrypt para aplicar una función hash MD5 al contenido de una serie de ficheros. Este se compara con un hash original, que se considera válido, y si son diferentes, es posible afirmar que se ha producido una modificación.
+Evitar la modificación de ficheros sensibles o críticos en el equipo. Se hace uso de la librería Wincrypt para aplicar una función hash MD5 al contenido de una serie de ficheros. Este se compara con un hash original, que se considera válido, y si son diferentes, es posible afirmar que se ha producido una modificación.
 
 Todas las funciones se encuentran en el fichero dll_main.cpp (aparte de las de context_challenge.h):
 - init()
@@ -53,3 +53,5 @@ Todas las funciones se encuentran en el fichero dll_main.cpp (aparte de las de c
 - check_if_same_hash(LPCWSTR filename, const char* original_hash)
 La última es que la que se encarga de realizar la comparativa del hash original con el hash calculado en ese momento.
 
+Inicialmente se concibió como un programa en C no parametrizable precisamente con el fin de dificultar su modificación; más difícil modificar un ejecutable C que un fichero de parámetros, aunque este esté permisionado (consideramos incluso que el atacante tenga permisos de superusuario).
+No sería un challenge estrictamente hablando según la definición de Secureworld. No obstante, creemos que es interesante como herramienta para detectar intrusiones y encaja bien dentro del objetivo de Secureworld.
